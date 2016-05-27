@@ -1,0 +1,21 @@
+{
+  "name": "AwesomeProject",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "node node_modules/react-native/local-cli/cli.js start",
+    "androidbundle": "curl \"http://localhost:8081/index.android.bundle?platform=android\" -o \"android/app/src/main/assets/index.android.bundle\"",
+    "androidrebuild": "./android/gradlew assembleRelease",
+    "androidsign": "jarsigner -verbose -keystore ~/.android/debug.keystore app/build/outputs/apk/app-release-unsigned.apk AndroidDebugKey",
+    "androidinstall": "adb install -r app/build/outputs/apk/app-release-unsigned.apk",
+    "android": "npm run-script setup-reverse-tcp-for-android-device && npm run-script install-app-to-android-device && npm run-script launch-android-app-on-device && echo \"Please Reload JS on the app from the menu after the webpack server starts below\" && npm run-script start-android-webpack-server"
+  },
+  "dependencies": {
+    "react": "^0.14.8",
+    "react-native": "^0.25.1",
+    "react-redux": "^4.4.5",
+    "redux": "^3.5.2",
+    "redux-logger": "^2.6.1",
+    "redux-thunk": "^2.1.0"
+  }
+}

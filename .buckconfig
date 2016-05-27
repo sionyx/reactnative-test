@@ -1,0 +1,10 @@
+
+[android]
+  target = Google Inc.:Google APIs:23
+
+[apple]
+  iphonesimulator_target_sdk_version = 7.0
+  iphoneos_target_sdk_version = 7.0
+
+[maven_repositories]
+  central = https://repo1.maven.org/maven2
