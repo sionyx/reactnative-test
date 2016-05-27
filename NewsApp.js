@@ -1,6 +1,3 @@
-'use strict';
-'use babel';
-
 import React, { Component } from 'react';
 import {
   AppRegistry,
@@ -19,9 +16,10 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as actions from './actions/sideMenuActions'
 
-import MainPage from './mainpage';
-import ReadPage from './readpage';
-import RubricsMenu from './rubricsmenu';
+import MainPage from './MainPage';
+import ReadPage from './ReadPage';
+import RubricsMenu from './RubricsMenu';
+import platformStyles from './PlatformStyles';
 
 export default class NewsApp extends React.Component {
   constructor(props) {
@@ -59,8 +57,8 @@ export default class NewsApp extends React.Component {
             case 'sidebar':
               content = (
                 <Image
-                source={require('./resources/side_menu.png')}
-                style={styles.navbarButtonIcon} />
+                  source={require('./resources/side_menu.png')}
+                  style={styles.navbarButtonIcon} />
               )
               break;
             default:
@@ -101,9 +99,11 @@ export default class NewsApp extends React.Component {
       },
       Title: function(route, navigator, index, navState) {
         return (
+          <View style={styles.navBarTitleContainer}>
           <Text style={[styles.navbarText, styles.navbarTitleText]}>
             { route.navBarHandler.TitleHandler ? route.navBarHandler.TitleHandler() : route.Title }
           </Text>
+          </View>
         );
       }
     }
@@ -112,8 +112,8 @@ export default class NewsApp extends React.Component {
       <SideMenu menu={<RubricsMenu />} isOpen={ this.state.menuOpened }>
        <View style={{ flex:1 }}>
          <StatusBar
-           backgroundColor="blue"
            barStyle="light-content"
+           style={styles.statusBar}
          />
         <Navigator
           initialRoute={{ id: 'Main' }}
@@ -146,28 +146,38 @@ export default class NewsApp extends React.Component {
 }
 
 var styles = StyleSheet.create({
-  navbar: {
+  statusBar: {
     backgroundColor: '#168de2',
+  },
+  navbar: {
+    flex: 1,
+    backgroundColor: '#168de2',
+  },
+  navBarTitleContainer: {
+    flex: 1,
+    justifyContent: 'center',
   },
   navbarText: {
     fontSize: 16,
-    marginVertical: 10,
   },
   navbarTitleText: {
     color: 'white',
     fontWeight: '500',
   },
   navbarLeftButton: {
-    paddingLeft: 10,
+    flex: 1,
+    justifyContent: 'center',
+    marginLeft: 10,
   },
   navbarRightButton: {
+    flex: 1,
+    justifyContent: 'center',
     paddingLeft: 10,
   },
   navbarButtonIcon: {
-    flex: 1,
     height: 21,
     resizeMode: 'contain',
-    margin: 10,
+    margin: 0,
   },
 });
 

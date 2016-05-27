@@ -8,10 +8,12 @@ import {
   StyleSheet,
   Text,
   TouchableHighlight,
-  View
+  View,
+  WebView
 } from 'react-native';
 import HTMLView from './HTMLView/HTMLView';
 import { NativeModules } from 'react-native';
+import platformStyles from './PlatformStyles';
 
 var REQUEST_NEWSCONTENT_URL = 'http://mobs.mail.ru/news/v2/getNewsById?id=';
 
@@ -53,44 +55,50 @@ export default class ReadPage extends Component {
       return this.renderLoadingView();
     }
 
+
     var content = this.state.newsContent;
-    return (
-      <ScrollView style={styles.contentcontainer}>
-        { this.renderImage(content) }
-        { this.renderHeader(content) }
-        { this.renderText(content) }
-      </ScrollView>
-    );
-  }
 
-  renderImage(content) {
-    if (content.image_B) {
-      return (
-        <Image source={{uri: content.image_B}} style={styles.mainpicture} />
-      );
-    }
-  }
+    var HTML = `
+<!DOCTYPE html>\n
+<html>
+  <head>
+    <title>Hello Static World</title>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=320, user-scalable=no">
+    <style type="text/css">
+      body {
+        margin: 0;
+        padding: 0;
+        font: 62.5% arial, sans-serif;
+        background: #eeeeee;
+      }
+      h1 {
+        padding: 10px;
+        margin: 0;
+        text-align: left;
+        color: #333;
+        font-size: 20px;
+      }
+      p {
+        padding-left: 10px;
+        padding-right: 10px;
+        font-size: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <img src=${ content.image_B } width='100%' />
+    <h1>${ content.title }</h1>
+    <p>${ content.textPreview }</p>
+    ${content.text}
+  </body>
+</html>
+`;
 
-  renderHeader(content) {
     return (
-      <TouchableHighlight onPress={ () => this.shareNews() }>
-      <View>
-        <Text style={styles.title}>{content.title}</Text>
-        <Text style={styles.date}>{content.date}</Text>
-        <Text style={styles.textPreview}>{content.textPreview}</Text>
-      </View>
-      </TouchableHighlight>
-    );
-  }
-
-  renderText(content) {
-    return (
-      <View style={styles.htmlViewContainer}>
-        <HTMLView
-          value={content.text}
-          stylesheet={styles}
-        />
-      </View>
+       <View style={[styles.contentcontainer, platformStyles.navbarPadding]}>
+        <WebView source={{html: HTML}} style={styles.webview} />
+       </View>
     );
   }
 
@@ -116,40 +124,9 @@ export default class ReadPage extends Component {
 const styles = StyleSheet.create({
   contentcontainer: {
     flex: 1,
-    paddingTop: 62,
     backgroundColor: '#EEEEEE',
   },
-  mainpicture: {
+  webview: {
     flex: 1,
-    height: 240,
-  },
-  title: {
-    fontSize: 20,
-    marginLeft: 10,
-    marginTop: 10,
-    marginRight: 10,
-    marginBottom: 5,
-    textAlign: 'left',
-  },
-  date: {
-    fontSize: 10,
-    marginLeft: 10,
-    marginBottom: 12,
-    textAlign: 'left',
-    color: '#CCCCCC',
-  },
-  textPreview: {
-    fontSize: 17,
-    margin: 10,
-    textAlign: 'left',
-  },
-  text: {
-    fontSize: 15,
-    margin: 10,
-    textAlign: 'left',
-  },
-  htmlViewContainer: {
-    marginHorizontal: 10
   }
-
 });

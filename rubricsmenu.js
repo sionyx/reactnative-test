@@ -13,6 +13,7 @@ import { NativeModules } from 'react-native';
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as actions from './actions/mainPageActions'
+import platformStyles from './PlatformStyles';
 
 export default class RubricsMenu extends Component {
   constructor(props) {
@@ -53,17 +54,19 @@ export default class RubricsMenu extends Component {
       <Image
         source={{uri: informer.weather.photo }}
         style={styles.infoBlockBG}>
-        <View style={styles.infoBlockOverlay}>
-          <Text style={styles.infoBlockCityText}>{ informer.weather.city }</Text>
-          <Text style={styles.infoBlockTemperatureText}>{ informer.weather.degree }°</Text>
-          <Text style={styles.infoBlockWeatherText}>{ informer.weather.description }</Text>
-          <View style={styles.currencyRate}>
-            <Text style={styles.currencyRateTextBold}>{informer.currency[0].currency} </Text>
-            <Text style={styles.currencyRateText}>{informer.currency[0].rate} </Text>
-            <Text style={styles.currencyRateTextBold}>{informer.currency[1].currency} </Text>
-            <Text style={styles.currencyRateText}>{informer.currency[1].rate} </Text>
-            <Text style={styles.currencyRateTextBold}>{informer.currency[2].currency} </Text>
-            <Text style={styles.currencyRateText}>{informer.currency[2].rate}</Text>
+        <View style={[styles.infoBlockOverlay, platformStyles.infoBlockOverlay]}>
+          <View style={[styles.infoBlockContent, platformStyles.infoBlockContent]}>
+            <Text style={styles.infoBlockCityText}>{ informer.weather.city }</Text>
+            <Text style={[styles.infoBlockTemperatureText, platformStyles.infoBlockTemperatureText]}>{ informer.weather.degree }°</Text>
+            <Text style={styles.infoBlockWeatherText}>{ informer.weather.description }</Text>
+            <View style={styles.currencyRate}>
+              <Text style={styles.currencyRateTextBold}>{informer.currency[0].currency} </Text>
+              <Text style={styles.currencyRateText}>{informer.currency[0].rate} </Text>
+              <Text style={styles.currencyRateTextBold}>{informer.currency[1].currency} </Text>
+              <Text style={styles.currencyRateText}>{informer.currency[1].rate} </Text>
+              <Text style={styles.currencyRateTextBold}>{informer.currency[2].currency} </Text>
+              <Text style={styles.currencyRateText}>{informer.currency[2].rate}</Text>
+            </View>
           </View>
         </View>
       </Image>
@@ -97,13 +100,13 @@ const styles = StyleSheet.create({
 
   infoBlockBG: {
     flex: 1,
-    height: 140,
   },
   infoBlockOverlay: {
-    backgroundColor: '#00000033',
+  },
+  infoBlockContent: {
+
   },
   infoBlockCityText: {
-    marginTop: 16,
     marginLeft: 10,
     textAlign: 'center',
     color: 'white',

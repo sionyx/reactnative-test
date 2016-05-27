@@ -14,6 +14,8 @@ import {
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as actions from './actions/mainPageActions'
+import platformStyles from './PlatformStyles';
+
 
 class MainPage extends Component {
   constructor(props) {
@@ -59,7 +61,7 @@ class MainPage extends Component {
           <ListView
             dataSource={hotnewsDataSource}
             renderRow={ (news) => this.renderHotNews(news)}
-            style={styles.listView}
+            style={[styles.listView, platformStyles.navbarPadding]}
           />
     );
   }
@@ -88,7 +90,9 @@ class MainPage extends Component {
             source={{uri: news.image_B}}
             style={styles.mainpicture}>
             <View style={styles.mainpictureTitleContainer}>
-              <Text style={styles.mainpictureTitle}>{news.title}</Text>
+              <View style={styles.mainpictureTitleBackgroud}>
+                <Text style={styles.mainpictureTitle}>{news.title}</Text>
+              </View>
             </View>
           </Image>
         </View>
@@ -96,6 +100,16 @@ class MainPage extends Component {
     );
   }
   renderNewsRegularTemplate (news) {
+    var image = null;
+    if (news.image_D) {
+      image = (
+        <Image
+          source={{uri: news.image_D}}
+          style={styles.thumbnail}
+        />
+      )
+    }
+
     return (
       <TouchableHighlight onPress={ () => this._navigateToReadPage(news.title, news.id) }>
         <View style={styles.container}>
@@ -103,10 +117,7 @@ class MainPage extends Component {
             <Text style={styles.title}>{news.title}</Text>
             <Text style={styles.date}>{news.date}</Text>
           </View>
-          <Image
-            source={{uri: news.image_D}}
-            style={styles.thumbnail}
-          />
+          { image }
         </View>
       </TouchableHighlight>
     );
@@ -145,15 +156,16 @@ const styles = StyleSheet.create({
     height: 80,
     marginRight: 10,
   },
+  mainpictureTitleBackgroud: {
+    position: 'absolute',
+    bottom: 0,
+    backgroundColor: '#00000033',
+  },
   mainpictureTitle: {
     fontSize: 17,
-    marginLeft: 10,
-    marginRight: 10,
+    margin: 10,
     textAlign: 'left',
     color: 'white',
-    position: 'absolute',
-    bottom: 10,
-    backgroundColor: 'rgba(0,0,0,0)',
   },
   title: {
     fontSize: 17,
@@ -173,7 +185,6 @@ const styles = StyleSheet.create({
 
   listView: {
     flex: 1,
-    paddingTop: 60,
     backgroundColor: '#F5FCFF',
   },
 });
